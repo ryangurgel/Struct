@@ -1,0 +1,67 @@
+/* editor.css */
+
+/* Garante que as tabelas ocupem a largura total e usem bordas visíveis */
+.tiptap-content table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* Estilo para células e cabeçalhos */
+  .tiptap-content th,
+  .tiptap-content td {
+    border: 1px solid #ccc;  /* cor da borda, ajuste se necessário */
+    padding: 8px;
+  }
+  
+  /* Cabeçalhos com fundo um pouco mais escuro */
+  .tiptap-content th {
+    background-color: #2c2c2c;
+  }
+  
+  /* Opcional: zebra striping para linhas */
+  .tiptap-content tr:nth-of-type(even) {
+    background-color: #1e1e1e;
+  }
+/* (editor.css) */
+
+/* Envolva a tabela em .table-wrapper se necessário */
+.table-wrapper {
+  position: relative;
+  display: inline-block; /* ou block, conforme layout */
+}
+
+/* Se você quiser estilizar a table nativamente */
+.tiptap-content table {
+  border-collapse: collapse;
+  /* Descomente se quiser ver se a table respeita position: relative
+     position: relative; 
+  */
+}
+
+/* Botões de linha (lado esquerdo) */
+.table-row-control {
+  position: absolute;
+  left: -24px;  /* empurra para fora do canto esquerdo */
+  background: #444;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Botões de coluna (topo) */
+.table-column-control {
+  position: absolute;
+  top: -24px;   /* empurra para cima */
+  background: #444;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+
+  
