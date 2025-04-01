@@ -1,5 +1,5 @@
 // Editor.jsx
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import { useEditor, EditorContent, FloatingMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
@@ -10,6 +10,7 @@ import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import SlashCommand from './SlashCommand'
+import TabPlugin from './TabPlugin'
 import { 
   Box, 
   ThemeProvider, 
@@ -48,6 +49,7 @@ export default function Editor() {
   const [fontFamily, setFontFamily] = useState('Helvetica')
   const [fontSize, setFontSize] = useState('Medium')
   const sizeMap = { Small: '14px', Medium: '16px', Large: '18px' }
+  const containerRef = useRef(null)
 
   const editorStyle = useCallback(() => ({
     fontFamily,
@@ -94,6 +96,7 @@ export default function Editor() {
   return (
     <ThemeProvider theme={darkTheme}>
       <Box 
+        ref={containerRef}
         sx={{ 
           backgroundColor: 'background.paper', 
           color: '#ccc', 
@@ -183,6 +186,9 @@ export default function Editor() {
         <Box sx={editorStyle()} className="tiptap-content">
           <EditorContent editor={editor} />
         </Box>
+
+        {/* Integração do plugin de abas para linha e coluna */}
+        <TabPlugin editor={editor} parentRef={containerRef} />
       </Box>
     </ThemeProvider>
   )
