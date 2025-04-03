@@ -9,6 +9,7 @@ import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
+import { Columns, Column } from './Columns.jsx'
 import SlashCommand from './SlashCommand'
 import { ImageUploader } from './ImageUploader'
 import {
@@ -22,6 +23,7 @@ import {
   MenuItem,
   OutlinedInput,
   Button,
+  useMediaQuery,
 } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 
@@ -38,11 +40,15 @@ import ImageIcon from '@mui/icons-material/Image'
 // Importa estilos customizados
 import './editor.css'
 
+// Tema escuro customizado com responsividade
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: { main: '#bb86fc' },
     background: { default: '#121212', paper: '#1e1e1e' },
+  },
+  typography: {
+    fontFamily: 'Helvetica, Arial, sans-serif',
   },
 })
 
@@ -50,16 +56,20 @@ export default function Editor({ initialContent, onSave, noteId }) {
   const [fontFamily, setFontFamily] = useState('Helvetica')
   const [fontSize, setFontSize] = useState('Medium')
   const sizeMap = { Small: '14px', Medium: '16px', Large: '18px' }
+  const isMobile = useMediaQuery(darkTheme.breakpoints.down('sm'))
 
+  // Define estilo do editor com base nas configurações e responsividade
   const editorStyle = useCallback(() => ({
     fontFamily,
     fontSize: sizeMap[fontSize] || '16px',
     minHeight: '200px',
     padding: '1rem',
-    backgroundColor: '#121212',
+    backgroundColor: darkTheme.palette.background.paper,
     color: '#ccc',
+    borderRadius: '4px',
   }), [fontFamily, fontSize])
 
+  // Configuração do editor com extensões
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -70,8 +80,10 @@ export default function Editor({ initialContent, onSave, noteId }) {
       TableRow,
       TableCell,
       TableHeader,
+      Column, // Extensão para colunas
+      Columns,
       SlashCommand,
-      ImageUploader, // nossa extensão customizada para uploader
+      ImageUploader, // Extensão customizada para upload de imagens
     ],
     content: initialContent || `<p>Digite "/" para abrir o menu de comandos.</p>`,
   })
@@ -84,6 +96,7 @@ export default function Editor({ initialContent, onSave, noteId }) {
 
   if (!editor) return null
 
+  // Função para definir ou remover link
   const setLink = () => {
     const url = prompt('URL do link:')
     if (url) {
@@ -93,6 +106,7 @@ export default function Editor({ initialContent, onSave, noteId }) {
     }
   }
 
+  // Função para inserir imagem
   const insertImage = () => {
     const url = prompt('URL da imagem:')
     if (url) {
@@ -100,6 +114,7 @@ export default function Editor({ initialContent, onSave, noteId }) {
     }
   }
 
+  // Função para salvar conteúdo
   const handleSaveClick = () => {
     const htmlContent = editor.getHTML()
     if (onSave) onSave(htmlContent)
@@ -113,8 +128,8 @@ export default function Editor({ initialContent, onSave, noteId }) {
           color: '#ccc',
           border: '1px solid #333',
           borderRadius: '4px',
+          p: { xs: 1, sm: 2 },
           position: 'relative',
-          p: 1,
         }}
       >
         <FloatingMenu
@@ -122,7 +137,7 @@ export default function Editor({ initialContent, onSave, noteId }) {
           tippyOptions={{ duration: 100, placement: 'top-start', maxWidth: 'none' }}
           shouldShow={({ editor }) => !editor.state.selection.empty}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <FormControl size="small" sx={{ minWidth: 100 }}>
               <InputLabel>Fonte</InputLabel>
               <Select
@@ -194,7 +209,7 @@ export default function Editor({ initialContent, onSave, noteId }) {
         <Box sx={editorStyle()} className="tiptap-content">
           <EditorContent editor={editor} />
         </Box>
-        <Box sx={{ marginTop: '1rem', textAlign: 'right' }}>
+        <Box sx={{ mt: 2, textAlign: 'right' }}>
           <Button variant="contained" color="primary" onClick={handleSaveClick}>
             Salvar Nota
           </Button>

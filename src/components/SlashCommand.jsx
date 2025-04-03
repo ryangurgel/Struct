@@ -125,32 +125,17 @@ const SlashCommand = Extension.create({
               },
             },
             {
-              icon: <ViewColumnIcon fontSize="small" />,
-              title: 'Columns',
-              command: ({ editor, range }) => {
-                editor.chain().focus().deleteRange(range).insertContent(`
-                  <div style="display: flex; gap: 16px;">
-                    <div style="flex: 1; border: 1px solid #ccc; padding: 8px;">
-                      <p>Coluna 1</p>
-                    </div>
-                    <div style="flex: 1; border: 1px solid #ccc; padding: 8px;">
-                      <p>Coluna 2</p>
-                    </div>
-                  </div>
-                `).run()
+                icon: <ViewColumnIcon fontSize="small" />,
+                title: 'Columns',
+                command: ({ editor, range }) => {
+                  editor
+                    .chain()
+                    .focus()
+                    .deleteRange(range)
+                    .insertContent('<div data-type="columns"><div data-type="column"><p>Coluna 1</p></div><div data-type="column"><p>Coluna 2</p></div></div>')
+                    .run()
+                },
               },
-            },
-            {
-              icon: <SubjectIcon fontSize="small" />,
-              title: 'Table of Contents',
-              command: ({ editor, range }) => {
-                editor.chain().focus().deleteRange(range).insertContent(`
-                  <div style="border: 1px dashed #666; padding: 8px;">
-                    <p><strong>[Table of Contents Placeholder]</strong></p>
-                  </div>
-                `).run()
-              },
-            },
           ]
           return allItems.filter((item) => item.title.toLowerCase().includes(q))
         },

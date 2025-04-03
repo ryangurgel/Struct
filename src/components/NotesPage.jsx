@@ -3,6 +3,23 @@ import React, { useState, useEffect } from 'react'
 import { supabase } from './supabaseClient'
 import Editor from './Editor'
 import { v4 as uuidv4 } from 'uuid'
+import {
+  Container,
+  Typography,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  IconButton,
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 
 export default function NotesPage() {
   const [notes, setNotes] = useState([])
@@ -10,11 +27,13 @@ export default function NotesPage() {
   const [editorContent, setEditorContent] = useState('')
   const [isEditing, setIsEditing] = useState(false)
   const [noteId, setNoteId] = useState('')
+  const [confirmDialog, setConfirmDialog] = useState({ open: false, note: null })
 
   useEffect(() => {
     fetchNotes()
   }, [])
 
+  // Busca as notas do Supabase Storage
   const fetchNotes = async () => {
     const { data, error } = await supabase.storage.from('notes').list('', {
       limit: 100,
@@ -28,6 +47,7 @@ export default function NotesPage() {
     }
   }
 
+  // Função para editar uma nota
   const handleEdit = async (note) => {
     window.currentNoteId = note.name
     setNoteId(note.name)
@@ -44,7 +64,14 @@ export default function NotesPage() {
     setIsEditing(true)
   }
 
-  const handleDelete = async (note) => {
+  // Abre o diálogo de confirmação para deleção
+  const handleDeleteConfirm = (note) => {
+    setConfirmDialog({ open: true, note })
+  }
+
+  // Executa a deleção após confirmação
+  const handleDelete = async () => {
+    const note = confirmDialog.note
     if (window.confirm(`Deseja deletar a nota ${note.name}?`)) {
       const { error } = await supabase.storage.from('notes').remove([`${note.name}/index.html`])
       if (error) {
@@ -53,8 +80,10 @@ export default function NotesPage() {
         fetchNotes()
       }
     }
+    setConfirmDialog({ open: false, note: null })
   }
 
+  // Cria uma nova nota
   const handleNewNote = () => {
     const newId = uuidv4()
     window.currentNoteId = newId
@@ -64,7 +93,7 @@ export default function NotesPage() {
     setIsEditing(true)
   }
 
-  // Remove imagens que não estejam referenciadas no HTML salvo
+  // Remove imagens não referenciadas no HTML salvo
   const cleanupUnusedImages = async (noteId, htmlContent) => {
     const regex = /<(?:img|div)[^>]+src=["']([^"']+)["']/g
     const imgSrcs = []
@@ -92,6 +121,7 @@ export default function NotesPage() {
     }
   }
 
+  // Salva a nota
   const handleSave = async (htmlContent) => {
     const currentNoteName = selectedNote ? selectedNote.name : noteId
     if (!currentNoteName) {
@@ -114,34 +144,58 @@ export default function NotesPage() {
   }
 
   return (
-    <div style={{ padding: '1rem', color: '#fff', backgroundColor: '#121212', minHeight: '100vh' }}>
+    <Container maxWidth="md" sx={{ pt: 2, pb: 4, color: '#fff', backgroundColor: '#121212', minHeight: '100vh' }}>
       {!isEditing ? (
-        <div>
-          <h1>Notas</h1>
-          <button onClick={handleNewNote}>Criar Nova Nota</button>
-          <ul>
+        <Box>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Notas
+          </Typography>
+          <Button variant="contained" color="primary" onClick={handleNewNote} sx={{ mb: 2 }}>
+            Criar Nova Nota
+          </Button>
+          <List>
             {notes.map((note) => (
-              <li key={note.name} style={{ margin: '0.5rem 0' }}>
-                <strong>{note.name}</strong>
-                <button onClick={() => handleEdit(note)} style={{ marginLeft: '1rem' }}>
-                  Editar
-                </button>
-                <button onClick={() => handleDelete(note)} style={{ marginLeft: '0.5rem' }}>
-                  Deletar
-                </button>
-              </li>
+              <ListItem key={note.name} sx={{ borderBottom: '1px solid #333' }}>
+                <ListItemText primary={note.name} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" aria-label="edit" onClick={() => handleEdit(note)}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteConfirm(note)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
-          </ul>
-        </div>
+          </List>
+        </Box>
       ) : (
-        <div>
-          <h2>{selectedNote ? `Editando: ${selectedNote.name}` : 'Criando nova nota'}</h2>
+        <Box>
+          <Typography variant="h5" gutterBottom>
+            {selectedNote ? `Editando: ${selectedNote.name}` : 'Criando nova nota'}
+          </Typography>
           <Editor initialContent={editorContent} onSave={handleSave} noteId={noteId} />
-          <button onClick={() => setIsEditing(false)} style={{ marginTop: '1rem' }}>
-            Cancelar
-          </button>
-        </div>
+          <Box sx={{ mt: 2, textAlign: 'right' }}>
+            <Button variant="outlined" color="secondary" onClick={() => setIsEditing(false)}>
+              Cancelar
+            </Button>
+          </Box>
+        </Box>
       )}
-    </div>
+
+      {/* Diálogo de confirmação para deleção */}
+      <Dialog open={confirmDialog.open} onClose={() => setConfirmDialog({ open: false, note: null })}>
+        <DialogTitle>Confirmação</DialogTitle>
+        <DialogContent>
+          <Typography>
+            Tem certeza que deseja deletar a nota {confirmDialog.note?.name}?
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmDialog({ open: false, note: null })}>Cancelar</Button>
+          <Button color="error" onClick={handleDelete}>Deletar</Button>
+        </DialogActions>
+      </Dialog>
+    </Container>
   )
 }
