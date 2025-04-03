@@ -1,5 +1,5 @@
 // Editor.jsx
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { useEditor, EditorContent, FloatingMenu } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
@@ -10,20 +10,22 @@ import TableRow from '@tiptap/extension-table-row'
 import TableCell from '@tiptap/extension-table-cell'
 import TableHeader from '@tiptap/extension-table-header'
 import SlashCommand from './SlashCommand'
-import { 
-  Box, 
-  ThemeProvider, 
-  Tooltip, 
-  IconButton, 
-  FormControl, 
-  InputLabel, 
-  Select, 
-  MenuItem, 
-  OutlinedInput 
+import { ImageUploader } from './ImageUploader'
+import {
+  Box,
+  ThemeProvider,
+  Tooltip,
+  IconButton,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  OutlinedInput,
+  Button,
 } from '@mui/material'
 import { createTheme } from '@mui/material/styles'
 
-// Ícones para a toolbar
+// Ícones da toolbar
 import FormatBoldIcon from '@mui/icons-material/FormatBold'
 import FormatItalicIcon from '@mui/icons-material/FormatItalic'
 import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined'
@@ -33,7 +35,7 @@ import CodeIcon from '@mui/icons-material/Code'
 import LinkIcon from '@mui/icons-material/Link'
 import ImageIcon from '@mui/icons-material/Image'
 
-// Importa os estilos customizados
+// Importa estilos customizados
 import './editor.css'
 
 const darkTheme = createTheme({
@@ -44,7 +46,7 @@ const darkTheme = createTheme({
   },
 })
 
-export default function Editor() {
+export default function Editor({ initialContent, onSave, noteId }) {
   const [fontFamily, setFontFamily] = useState('Helvetica')
   const [fontSize, setFontSize] = useState('Medium')
   const sizeMap = { Small: '14px', Medium: '16px', Large: '18px' }
@@ -69,9 +71,16 @@ export default function Editor() {
       TableCell,
       TableHeader,
       SlashCommand,
+      ImageUploader, // nossa extensão customizada para uploader
     ],
-    content: `<p>Type "/" to open the slash command menu.</p>`,
+    content: initialContent || `<p>Digite "/" para abrir o menu de comandos.</p>`,
   })
+
+  useEffect(() => {
+    if (editor && initialContent) {
+      editor.commands.setContent(initialContent)
+    }
+  }, [initialContent, editor])
 
   if (!editor) return null
 
@@ -91,19 +100,23 @@ export default function Editor() {
     }
   }
 
+  const handleSaveClick = () => {
+    const htmlContent = editor.getHTML()
+    if (onSave) onSave(htmlContent)
+  }
+
   return (
     <ThemeProvider theme={darkTheme}>
-      <Box 
-        sx={{ 
-          backgroundColor: 'background.paper', 
-          color: '#ccc', 
-          border: '1px solid #333', 
-          borderRadius: '4px', 
-          position: 'relative', 
-          p: 1 
+      <Box
+        sx={{
+          backgroundColor: 'background.paper',
+          color: '#ccc',
+          border: '1px solid #333',
+          borderRadius: '4px',
+          position: 'relative',
+          p: 1,
         }}
       >
-        {/* FloatingMenu: Toolbar */}
         <FloatingMenu
           editor={editor}
           tippyOptions={{ duration: 100, placement: 'top-start', maxWidth: 'none' }}
@@ -178,10 +191,13 @@ export default function Editor() {
             </Tooltip>
           </Box>
         </FloatingMenu>
-
-        {/* Área do editor com classe para aplicar estilos customizados */}
         <Box sx={editorStyle()} className="tiptap-content">
           <EditorContent editor={editor} />
+        </Box>
+        <Box sx={{ marginTop: '1rem', textAlign: 'right' }}>
+          <Button variant="contained" color="primary" onClick={handleSaveClick}>
+            Salvar Nota
+          </Button>
         </Box>
       </Box>
     </ThemeProvider>

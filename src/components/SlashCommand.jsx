@@ -5,8 +5,6 @@ import { Extension } from '@tiptap/core'
 import Suggestion from '@tiptap/suggestion'
 import tippy from 'tippy.js'
 import SuggestionList from './SuggestionList'
-
-// Ícones do Material UI:
 import NotesIcon from '@mui/icons-material/Notes'
 import LooksOneIcon from '@mui/icons-material/LooksOne'
 import LooksTwoIcon from '@mui/icons-material/LooksTwo'
@@ -24,7 +22,6 @@ import SubjectIcon from '@mui/icons-material/Subject'
 
 const SlashCommand = Extension.create({
   name: 'slash-command',
-
   addOptions() {
     return {
       suggestion: {
@@ -33,7 +30,6 @@ const SlashCommand = Extension.create({
         items: ({ query }) => {
           const q = query.toLowerCase()
           const allItems = [
-            // Headings
             {
               icon: <LooksOneIcon fontSize="small" />,
               title: 'Heading 1',
@@ -52,14 +48,12 @@ const SlashCommand = Extension.create({
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).setHeading({ level: 3 }).run(),
             },
-            // Parágrafo
             {
               icon: <NotesIcon fontSize="small" />,
               title: 'Paragraph',
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).setParagraph().run(),
             },
-            // Listas
             {
               icon: <FormatListBulletedIcon fontSize="small" />,
               title: 'Bullet List',
@@ -84,28 +78,24 @@ const SlashCommand = Extension.create({
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).toggleBulletList().run(),
             },
-            // Blockquote
             {
               icon: <FormatQuoteIcon fontSize="small" />,
               title: 'Blockquote',
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).toggleBlockquote().run(),
             },
-            // Code Block
             {
               icon: <CodeIcon fontSize="small" />,
               title: 'Code Block',
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
             },
-            // Horizontal Rule
             {
               icon: <HorizontalRuleIcon fontSize="small" />,
               title: 'Horizontal Rule',
               command: ({ editor, range }) =>
                 editor.chain().focus().deleteRange(range).setHorizontalRule().run(),
             },
-            // Table
             {
               icon: <TableChartIcon fontSize="small" />,
               title: 'Table',
@@ -115,7 +105,6 @@ const SlashCommand = Extension.create({
                   .run()
               },
             },
-            // Image
             {
               icon: <ImageIcon fontSize="small" />,
               title: 'Image',
@@ -125,7 +114,16 @@ const SlashCommand = Extension.create({
                 editor.chain().focus().deleteRange(range).setImage({ src: url }).run()
               },
             },
-            // Columns (Placeholder)
+            {
+              icon: <ImageIcon fontSize="small" />,
+              title: 'Upload Image',
+              command: ({ editor, range }) => {
+                // Insere o nó do image uploader
+                editor.chain().focus().deleteRange(range).insertContent({
+                  type: 'imageUploader',
+                }).run()
+              },
+            },
             {
               icon: <ViewColumnIcon fontSize="small" />,
               title: 'Columns',
@@ -142,7 +140,6 @@ const SlashCommand = Extension.create({
                 `).run()
               },
             },
-            // Table of Contents (Placeholder)
             {
               icon: <SubjectIcon fontSize="small" />,
               title: 'Table of Contents',
@@ -161,7 +158,6 @@ const SlashCommand = Extension.create({
           let container, popup, root, suggestionRef = React.createRef()
           let currentProps = null
 
-          // Função para executar o comando usando os dados atuais (editor, range)
           function executeCommand(item) {
             if (currentProps) {
               item.command({
@@ -201,13 +197,17 @@ const SlashCommand = Extension.create({
             },
             onUpdate: (props) => {
               renderReactComponent(props)
-              popup[0].setProps({
-                getReferenceClientRect: props.clientRect,
-              })
+              if (popup && popup[0] && !popup[0]._isDestroyed) {
+                popup[0].setProps({
+                  getReferenceClientRect: props.clientRect,
+                })
+              }
             },
             onKeyDown: (props) => {
               if (props.event.key === 'Escape') {
-                popup[0].hide()
+                if (popup && popup[0] && !popup[0]._isDestroyed) {
+                  popup[0].hide()
+                }
                 return true
               }
               if (suggestionRef.current && suggestionRef.current.onKeyDown) {
@@ -216,7 +216,7 @@ const SlashCommand = Extension.create({
               return false
             },
             onExit: () => {
-              if (popup) {
+              if (popup && popup[0] && !popup[0]._isDestroyed) {
                 popup[0].destroy()
               }
               if (root) {
@@ -228,7 +228,6 @@ const SlashCommand = Extension.create({
       },
     }
   },
-
   addProseMirrorPlugins() {
     return [Suggestion({ editor: this.editor, ...this.options.suggestion })]
   },

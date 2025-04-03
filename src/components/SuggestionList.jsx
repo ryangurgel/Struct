@@ -5,12 +5,10 @@ import { Box, Button } from '@mui/material'
 const SuggestionList = forwardRef(({ items, command }, ref) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
 
-  // Sempre que os itens mudarem, reinicia o índice selecionado
   useEffect(() => {
     setSelectedIndex(0)
   }, [items])
 
-  // Expor método onKeyDown para o pai via ref
   useImperativeHandle(ref, () => ({
     onKeyDown({ event }) {
       if (event.key === 'ArrowUp') {
