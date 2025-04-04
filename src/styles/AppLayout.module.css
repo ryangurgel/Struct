@@ -1,0 +1,78 @@
+/* src/components/AppLayout.module.css */
+.appLayout {
+    display: flex;
+    min-height: 100vh; /* Garante que o layout ocupe toda a altura */
+    background-color: var(--bg-primary); /* Fundo geral */
+  }
+  
+  .mainContent {
+    flex-grow: 1; /* Ocupa o espaço restante */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Previne overflow inesperado */
+    /* Adiciona margin-left em desktop para acomodar sidebar estático */
+    margin-left: 0; /* Sem margem em mobile */
+  }
+  
+  .mobileHeader {
+    display: flex; /* Visível apenas em mobile */
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-secondary);
+    padding: 0.8rem 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    position: sticky; /* Pode ser útil para fixar no topo ao rolar */
+    top: 0;
+    z-index: 900; /* Abaixo do sidebar mobile */
+  }
+  
+  .mobileTitle {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0; /* Remove margin default do h1 */
+  }
+  
+  .menuButton {
+    background: none;
+    border: none;
+    color: var(--text-primary);
+    padding: 0.5rem;
+    display: flex; /* Para centralizar o ícone */
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Botão redondo */
+    transition: background-color 0.2s;
+  }
+  
+  .menuButton:hover {
+    background-color: var(--bg-hover-light);
+  }
+  
+  .pageContent {
+    flex-grow: 1; /* Ocupa o espaço restante no mainContent */
+    overflow-y: auto; /* Permite scroll vertical SE necessário */
+    padding: 1.5rem; /* Espaçamento interno */
+  }
+  
+  /* Responsividade */
+  /* Telas maiores (Desktop) */
+  @media (min-width: 1024px) {
+    .mobileHeader {
+      display: none; /* Esconde cabeçalho mobile */
+    }
+  
+    .mainContent {
+      /* A sidebar agora é estática e ocupa espaço, não precisa de margin */
+      margin-left: 0; /* Reseta margem se foi usada antes */
+    }
+  
+    .pageContent {
+      padding: 2rem; /* Aumenta um pouco o padding em desktop */
+    }
+  }
+  
+  /* Telas menores (Mobile/Tablet) */
+  @media (max-width: 1023px) {
+    /* Aqui não precisamos mudar .mainContent porque a sidebar é position: fixed */
+  }

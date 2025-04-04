@@ -1,0 +1,14 @@
+/* knowledge-map.css */
+
+.knowledge-map-flow {
+    background-color: #121212;
+    font-family: 'Inter', 'Helvetica', 'Arial', sans-serif;
+  }
+  
+  /* Transições suaves para os nós */
+  .react-flow__node {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  /* Você pode adicionar estilos adicionais para os handles, arestas, etc. */
+  

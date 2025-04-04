@@ -1,0 +1,112 @@
+/* src/components/Sidebar.module.css */
+.sidebar {
+    background-color: var(--bg-secondary);
+    width: var(--sidebar-width);
+    height: 100vh; /* Altura total */
+    position: fixed; /* Começa fixo para transição mobile */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Sobreposição alta */
+    transform: translateX(-100%); /* Escondido por padrão em mobile */
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .sidebarOpen {
+    transform: translateX(0); /* Visível quando open */
+  }
+  
+  .sidebarContent {
+    padding: 1.5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Ocupa espaço disponível */
+  }
+  
+  .sidebarHeader {
+    color: #ffffff;
+    font-size: 1.75rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center; /* Ou left */
+  }
+  
+  .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Espaço entre links */
+  }
+  
+  .navLink {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out;
+    font-weight: 500;
+  }
+  
+  .navLink:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+  
+  .navLinkActive {
+    background-color: var(--accent-primary); /* Cor de destaque para ativo */
+    color: var(--text-on-accent);
+    font-weight: 600;
+  }
+  
+  .navLinkActive:hover {
+    background-color: var(--accent-primary-hover); /* Mantem ou escurece um pouco no hover */
+    color: var(--text-on-accent);
+  }
+  
+  .navIcon {
+    margin-right: 0.8rem;
+    flex-shrink: 0; /* Evita que o ícone encolha */
+    /* Tamanho definido via prop no ícone (size={20}) */
+  }
+  
+  /* Overlay para mobile */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999; /* Abaixo do sidebar */
+    display: none; /* Escondido por padrão */
+  }
+  
+  /* Responsividade */
+  /* Telas maiores (Desktop) */
+  @media (min-width: 1024px) {
+    .sidebar {
+      position: static; /* Volta a ser parte do fluxo normal */
+      height: auto; /* Altura automática */
+      transform: translateX(0); /* Sempre visível */
+      box-shadow: none; /* Remove sombra desnecessária */
+      border-right: 1px solid var(--border-color); /* Adiciona uma borda sutil */
+    }
+  
+    /* Overlay não é necessário em desktop */
+    .overlay {
+      display: none !important;
+    }
+  }
+  
+  /* Mostra o overlay apenas quando o sidebar estiver aberto em mobile */
+  /* Precisamos de uma lógica JS ou classe no body para isso, ou mostramos sempre que isOpen for true E a tela for pequena */
+  /* Simplificando: o JS já mostra/esconde o overlay baseado no isOpen */
+  @media (max-width: 1023px) {
+    .sidebarOpen + .overlay { /* Seleciona o overlay que vem depois do sidebar aberto */
+       /* Na verdade, o overlay está fora, então o JS controla sua visibilidade */
+       /* O CSS module do overlay só precisa definir a aparência e z-index */
+    }
+    .overlay {
+        display: block; /* Mostra o overlay em mobile (o JS controla via estado `isOpen`) */
+    }
+  }

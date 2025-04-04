@@ -1,0 +1,107 @@
+/* src/styles/global.css */
+
+/* Definição das Variáveis de Cor para o Tema Dark */
+:root {
+    --bg-primary: #121212;      /* Fundo principal muito escuro */
+    --bg-secondary: #1e1e1e;    /* Fundo de elementos (cards, sidebar) */
+    --bg-tertiary: #2a2a2a;     /* Hover/Active em elementos secundários */
+    --bg-hover-light: #333333; /* Um hover um pouco mais claro */
+  
+    --text-primary: #e0e0e0;    /* Texto principal (quase branco) */
+    --text-secondary: #a0a0a0;  /* Texto secundário (cinza claro) */
+    --text-on-accent: #ffffff; /* Texto sobre botões de acento */
+    --text-on-warn: #000000;   /* Texto sobre botões de aviso (amarelo) */
+  
+    --border-color: #3a3a3a;     /* Cor da borda sutil */
+  
+    --accent-primary: #3b82f6;  /* Azul como cor de acento */
+    --accent-primary-hover: #2563eb;
+    --accent-danger: #ef4444;   /* Vermelho para deletar */
+    --accent-danger-hover: #dc2626;
+    --accent-warning: #f59e0b;  /* Amarelo para editar */
+    --accent-warning-hover: #d97706;
+    --accent-success: #22c55e; /* Verde para salvar (se necessário) */
+    --accent-success-hover: #16a34a;
+    --accent-cancel: #6b7280;   /* Cinza para cancelar */
+    --accent-cancel-hover: #4b5563;
+  
+    --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  
+    --sidebar-width: 250px;
+  }
+  
+  /* Reset Básico e Estilos Globais */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  html {
+    font-size: 16px; /* Base para REMs */
+  }
+  
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-family-base);
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffffff; /* Títulos um pouco mais brilhantes */
+    margin-bottom: 0.75em;
+    line-height: 1.3;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  h3 { font-size: 1.3rem; }
+  
+  a {
+    color: var(--accent-primary);
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  button {
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out, opacity 0.2s ease-out;
+    border: none; /* Remove borda padrão */
+    padding: 0.6em 1.2em; /* Padding padrão para botões */
+    font-size: 0.95rem;
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  ul, ol {
+    list-style: none;
+  }
+  
+  /* Estilos básicos para o container principal, se necessário */
+  /* .container { */
+    /* max-width: 1200px; */
+    /* margin-left: auto; */
+    /* margin-right: auto; */
+    /* padding-left: 1rem; */
+    /* padding-right: 1rem; */
+  /* } */
+  
+  /* Estilos específicos para ícones react-icons */
+  .react-icon {
+    display: inline-block;
+    vertical-align: middle; /* Alinha melhor com o texto */
+  }

@@ -1,0 +1,243 @@
+/* src/pages/NotesPage.module.css */
+.notesPageContainer {
+    /* O container principal já tem padding do AppLayout */
+  }
+  
+  .header {
+    display: flex;
+    flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    gap: 1rem; /* Espaço entre título e botão */
+  }
+  
+  .title {
+    font-size: 1.875rem; /* ~30px */
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0; /* Sobrescreve margem padrão */
+  }
+  
+  /* --- Botões --- */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6rem 1.1rem;
+    border-radius: 6px;
+    border: none;
+    font-weight: 500; /* Medium */
+    cursor: pointer;
+    transition: background-color 0.2s ease-out, opacity 0.2s ease-out, box-shadow 0.2s ease-out;
+    text-align: center;
+    white-space: nowrap; /* Evita quebra de linha no texto */
+    font-size: 0.9rem;
+  }
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .buttonIcon {
+    display: inline-block;
+    margin-right: 0.4rem; /* Espaço entre ícone e texto */
+    /* O tamanho é definido no próprio ícone (size={...}) */
+  }
+  /* Remove margem se o botão SÓ tiver ícone (adicionar classe específica ou detectar ausência de texto) */
+  .buttonIconOnly { /* Exemplo de classe para botão só com ícone */
+      padding: 0.6rem;
+      margin-right: 0;
+  }
+  .buttonIconOnly .buttonIcon {
+      margin-right: 0;
+  }
+  
+  .buttonPrimary {
+    background-color: var(--accent-primary);
+    color: var(--text-on-accent);
+  }
+  .buttonPrimary:hover:not(:disabled) {
+    background-color: var(--accent-primary-hover);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .buttonWarning {
+    background-color: var(--accent-warning);
+    color: var(--text-on-warn);
+  }
+  .buttonWarning:hover:not(:disabled) {
+    background-color: var(--accent-warning-hover);
+  }
+  
+  .buttonDanger {
+    background-color: var(--accent-danger);
+    color: var(--text-on-accent);
+  }
+  .buttonDanger:hover:not(:disabled) {
+    background-color: var(--accent-danger-hover);
+  }
+  
+  .buttonCancel {
+    background-color: var(--accent-cancel);
+    color: var(--text-on-accent);
+  }
+  .buttonCancel:hover:not(:disabled) {
+    background-color: var(--accent-cancel-hover);
+  }
+  
+  .buttonSuccess {
+    background-color: var(--accent-success);
+    color: var(--text-on-accent);
+  }
+  .buttonSuccess:hover:not(:disabled) {
+    background-color: var(--accent-success-hover);
+  }
+  
+  /* Botões menores para ações na lista */
+  .buttonSmall {
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+  }
+  .buttonSmall .buttonIcon {
+      margin-right: 0.3rem;
+  }
+  
+  
+  /* --- Mensagens e Loading --- */
+  .errorMessage {
+    background-color: rgba(239, 68, 68, 0.1); /* Fundo vermelho claro translúcido */
+    border: 1px solid var(--accent-danger);
+    color: #fca5a5; /* Texto vermelho claro */
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Alinha texto e botão no topo */
+  }
+  .errorMessage strong {
+      color: #ffffff; /* Destaca a palavra "Erro" */
+  }
+  .closeErrorButton {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0; /* Remove padding extra */
+    margin-left: 1rem; /* Espaço do texto */
+    flex-shrink: 0; /* Evita encolher */
+  }
+  .closeErrorButton:hover {
+      color: var(--text-primary);
+  }
+  
+  .loadingMessage, .emptyMessage {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .loadingSpinner {
+    animation: spin 1.5s linear infinite;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  
+  /* --- Lista de Notas --- */
+  .noteListContainer {
+    /* Container para a lista e mensagens de loading/vazio */
+  }
+  
+  .noteList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem; /* Espaço entre itens da lista */
+  }
+  
+  .noteItem {
+    background-color: var(--bg-secondary);
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column; /* Mobile first: ações abaixo */
+    justify-content: space-between;
+    align-items: flex-start; /* Alinha nome à esquerda */
+    transition: box-shadow 0.2s ease-out, transform 0.2s ease-out;
+    border: 1px solid transparent; /* Borda para transição */
+  }
+  .noteItem:hover {
+      /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
+      /* transform: translateY(-2px); */
+      border-color: var(--border-color); /* Borda sutil no hover */
+  }
+  
+  .noteName {
+    font-weight: 500; /* Medium */
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem; /* Espaço antes das ações em mobile */
+    /* Para evitar quebra de texto muito longa: */
+    word-break: break-all; /* Ou break-word */
+  }
+  
+  .noteActions {
+    display: flex;
+    gap: 0.6rem; /* Espaço entre botões de ação */
+    align-self: flex-end; /* Alinha botões à direita em mobile */
+  }
+  
+  /* --- Editor --- */
+  .editorContainer {
+    background-color: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .editorHeader {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+  }
+  
+  .editorActions {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: flex-end; /* Alinha botões à direita */
+    gap: 0.75rem;
+  }
+  
+  /* Responsividade para a lista de notas */
+  @media (min-width: 640px) { /* sm breakpoint approx. */
+    .noteItem {
+      flex-direction: row; /* Lado a lado em telas maiores */
+      align-items: center; /* Centraliza verticalmente */
+    }
+    .noteName {
+      margin-bottom: 0; /* Remove margem inferior */
+      margin-right: 1rem; /* Adiciona espaço à direita */
+      flex-grow: 1; /* Permite que o nome ocupe espaço */
+      /* Evitar overflow se o nome for muito grande */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .noteActions {
+      align-self: center; /* Centraliza verticalmente */
+      flex-shrink: 0; /* Evita que os botões encolham */
+    }
+  }
