@@ -140,10 +140,8 @@ export default function NotesPage() {
   
       if (error) throw error;
   
-      setIsEditing(false);
-      setSelectedNote(null);
-      setEditorContent('');
-      setNoteId('');
+      // NÃO fecha o editor, porra!
+      // Apenas atualiza a lista no fundo se quiser
       fetchNotes();
     } catch (error) {
       console.error('Erro ao salvar nota:', error);
@@ -152,6 +150,7 @@ export default function NotesPage() {
       setIsSaving(false);
     }
   };
+  
   
 
   const handleCancelEdit = () => {
