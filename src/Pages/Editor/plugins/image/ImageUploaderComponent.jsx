@@ -1,7 +1,7 @@
 // ImageUploaderComponent.jsx
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { NodeViewWrapper } from '@tiptap/react';
-import { supabase } from '../supabaseClient'; // Ajuste o caminho se necessário
+import { supabase } from '../../../../supabaseClient'; // Ajuste o caminho se necessário
 import {
   Box,
   Button,

@@ -4,9 +4,9 @@
 // agora usam seus respectivos CSS Modules internamente.
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import AppLayout from './components/AppLayout'; // Importa o componente que usa CSS Module
-import NotesPage from './components/NotesPage';    // Importa o componente que usa CSS Module
-import KnowledgeMap from './components/KnowledgeMap';
+import AppLayout from './layouts/AppLayout'; // Importa o componente que usa CSS Module
+import NotesPage from './Pages/Home/Home';    // Importa o componente que usa CSS Module
+import KnowledgeMap from './Pages/Knowledge/KnowledgeMap';
 
 
 // Placeholders

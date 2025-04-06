@@ -1,9 +1,9 @@
 // src/components/AppLayout.jsx
 import React, { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 import { LuMenu, LuX } from 'react-icons/lu';
-import styles from '../styles/AppLayout.module.css'; // Importa o CSS Module
+import styles from './AppLayout.module.css'; // Importa o CSS Module
 
 function AppLayout() {
   // Estado para controlar a visibilidade do sidebar em mobile

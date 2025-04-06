@@ -22,7 +22,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 
 // Importa o CSS customizado
-import './knowledge-map.css';
+import './knowledge.module.css';
 
 // Tema dark customizado
 const darkTheme = createTheme({

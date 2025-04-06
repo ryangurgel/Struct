@@ -2,7 +2,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { LuCalendarDays, LuClipboardList, LuStickyNote } from 'react-icons/lu';
-import styles from '../styles/Sidebar.module.css'; // Importa o CSS Module
+import styles from './Sidebar.module.css'; // Importa o CSS Module
 
 const navItems = [
   { name: 'Agenda', path: '/agenda', icon: LuCalendarDays },
